@@ -1,9 +1,10 @@
 import React from 'react';
+import TodoList from './TodoList';
 
 const App:React.FC = () => {
     return (
         <>
-        this is a test
+        <TodoList/>
         </>
     )
 }
