@@ -1,13 +1,14 @@
 import React from 'react';
 import { CssBaseline } from '@mui/material';
+import TodoList from './TodoList';
 
 const App:React.FC = () => {
     return (
         <>
         <CssBaseline />
-        <div>
-            test
-        </div>
+            <div style={{marginLeft:"20px"}}>
+            <TodoList/>
+            </div>
         </>
     )
 }
