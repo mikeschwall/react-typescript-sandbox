@@ -1,10 +1,13 @@
 import React from 'react';
-import TodoList from './TodoList';
+import { CssBaseline } from '@mui/material';
 
 const App:React.FC = () => {
     return (
         <>
-        <TodoList/>
+        <CssBaseline />
+        <div>
+            test
+        </div>
         </>
     )
 }
