@@ -7,7 +7,7 @@ const App:React.FC = () => {
         <>
         <CssBaseline />
             <div style={{marginLeft:"20px"}}>
-            test
+            <TodoList/>
             </div>
         </>
     )
