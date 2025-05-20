@@ -5,7 +5,7 @@ import axios from "axios";
 export interface Todo {
     id:number;
     title:string;
-    completed:boolean;
+    completed: boolean;
 }
 
 export interface Message {
@@ -14,12 +14,7 @@ export interface Message {
 
 export interface FetchTodoAction {
     type: actionTypes.FETCH_TODOS;
-    payload: Todo[];
-}
-
-export interface DeleteTodoAction {
-    type: actionTypes.DELETE_TODO;
-    payload: number;
+    payload: Todo[]
 }
 
 export interface GetMessageAction {
@@ -32,11 +27,16 @@ export interface AddTodoAction {
     payload: Todo;
 }
 
-export type TodoAction = FetchTodoAction | DeleteTodoAction | AddTodoAction;
+export interface DeleteTodoAction {
+    type: actionTypes.DELETE_TODO;
+    payload: number;
+}
+
+export type TodoAction = FetchTodoAction | GetMessageAction | AddTodoAction | DeleteTodoAction;
 
 export const fetchTodos = () => {
     return async (dispatch:Dispatch) => {
-        const {data} = await axios.get<Todo[]>("https://jsonplaceholder.typicode.com/todos");
+        const {data} = await axios.get("https://jsonplaceholder.typicode.com/todos");
         dispatch<FetchTodoAction>({
             type: actionTypes.FETCH_TODOS,
             payload: data
@@ -44,25 +44,24 @@ export const fetchTodos = () => {
     }
 }
 
-export const deleteTodo = (id:number) => {
-    return {
-        type: actionTypes.DELETE_TODO,
-        payload:id
-    }
-}
-
-export const getMessage = (m:Message):GetMessageAction => {
+export const getMessage = (m:Message): GetMessageAction => {
     return {
         type: actionTypes.GET_MESSAGE,
-        payload:m
+        payload: m
     }
 }
 
-export const addTodo = (todo: Todo):AddTodoAction => {
+export const addTodo = (t:Todo):AddTodoAction => {
     return {
         type: actionTypes.ADD_TODO,
-        payload: todo
+        payload: t
     }
 }
 
-export type AppActions = FetchTodoAction | DeleteTodoAction | AddTodoAction | GetMessageAction;
+export const deleteTodo = (id:number):DeleteTodoAction => {
+    return {
+        type: actionTypes.DELETE_TODO,
+        payload: id
+    }
+}
+
