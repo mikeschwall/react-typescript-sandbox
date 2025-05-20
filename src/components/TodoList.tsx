@@ -1,67 +1,47 @@
-import React, { useEffect } from 'react';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import { addTodo, AppActions, deleteTodo, fetchTodos, getMessage, Message, Todo } from '../actions';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../reducers';
 import { ThunkDispatch } from 'redux-thunk';
+import { addTodo, deleteTodo, fetchTodos, getMessage, TodoAction } from '../actions';
 import TodoForm from './TodoForm';
-import MyButton from './MyButton';
-
-// interface StateProps {
-//   todos: Todo[];
-//   header: Message;
-// }
-
-// interface DispatchProps {
-//   fetchTodos: () => void;
-//   deleteTodo: typeof deleteTodo;
-//   getMessage: typeof getMessage
-// }
-
-//type MergedProps = StateProps & DispatchProps;
+import MyButton from './MyButtons';
+import styles from './TodoList.module.css';
 
 const TodoList:React.FC = () => {
 
-  const dispatch: ThunkDispatch<AppState, void, AppActions> = useDispatch();
-  const todos = useSelector((state:AppState) => state.todos);
-  const header = useSelector((state:AppState) => state.header);
+    const todos = useSelector((state:AppState) => state.todos);
+    const header = useSelector((state:AppState) => state.header);
+    const dispatch:ThunkDispatch<AppState,void,TodoAction> = useDispatch();
+    const [active,setActive] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchTodos());
-    dispatch(getMessage({title:"hello"}));
-  },[dispatch]);
+    useEffect(() => {
+        dispatch(fetchTodos());
+    },[dispatch]);
 
-  const handleData = (test:any) => {
-    dispatch(addTodo({id:Math.random(),title:test,completed:false}))
-  }
+    const handleDelete = (id:number) => {
+        dispatch(deleteTodo(id));
+        setActive(false);
+    }
 
-  const handleButtonClick = () => {
-    dispatch(getMessage({title:"Button changed on click"}))
-  }
+    const addTodoFromForm = useCallback((title:string) => {
+        dispatch(addTodo({id:Math.random(),title,completed:false}));
+    },[dispatch]);
 
-  return (
-    <div>
-      <h2>Todos</h2>
-      {header.title}
-      <br/>
-      <MyButton changeLabel={() => handleButtonClick()}>change header</MyButton>
-      <TodoForm getData={handleData}/>
-      {todos && todos.map(item => <li key={item.title}>{item.title}</li>)}
-    </div>
-  )
+    const handleButtonClick = () => {
+        dispatch(getMessage({title:"State has been updated"}));
+        setActive(true);
+    }
+
+    return (
+        <div>
+            <h2>Todos</h2>
+            <div className={active ? styles.message : ''}>{header.title !== "hello" ? header.title : ''}</div>
+            <TodoForm getData={addTodoFromForm}/>
+            <MyButton changeLabel={() => handleButtonClick()}>change state</MyButton>
+            {todos && todos.map(item => <li key={item.id}>{item.title} 
+                <button onClick={() => handleDelete(item.id)}>delete</button></li>)}
+        </div>
+    )
 }
-
-// const mapStateToProps = (state:AppState) => {
-//   return {
-//     todos: state.todos,
-//     header: state.header
-//   }
-// }
-
-// const mapDispatchProps = {
-//   fetchTodos,
-//   addTodo,
-//   deleteTodo,
-//   getMessage
-// }
 
 export default TodoList;
