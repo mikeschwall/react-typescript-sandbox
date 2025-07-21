@@ -14,7 +14,7 @@ const MyForm:React.FC<AddTodoProps> = ({getdata}) => {
     const {register,handleSubmit,reset} = useForm<FormProps>();
 
     const submitForm = (formdata:FormProps) => {
-        console.info(formdata);
+        //console.info(formdata);
         getdata(formdata.mytodo)
         reset();
     }
