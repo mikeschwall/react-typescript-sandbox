@@ -4,9 +4,7 @@ import App from './components/App';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore,applyMiddleware } from 'redux';
-import combineReducers from './reducers';
-import { AuthContextProvider } from './context/store';
-const store = createStore(combineReducers,applyMiddleware(thunk))
+
 
 
 
@@ -14,10 +12,6 @@ const rootElement = document.querySelector('#root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement); // ✅ React 18+
   root.render(
-   <Provider store={store}>
-    <AuthContextProvider>
-      <App/>
-    </AuthContextProvider>
-   </Provider>
+   <App/>
   );
 }
