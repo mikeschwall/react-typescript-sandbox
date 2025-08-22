@@ -12,8 +12,6 @@ const rootElement = document.querySelector('#root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement); // ✅ React 18+
   root.render(
-   <Provider store={store}>
-    <App/>
-   </Provider>
+   <App/>
   );
 }
