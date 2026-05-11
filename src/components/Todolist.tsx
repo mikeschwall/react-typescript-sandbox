@@ -4,12 +4,14 @@ import { ThunkDispatch } from "redux-thunk";
 import { addTodo, deleteTodo, fetchTodos, TodoAction } from "../actions";
 import { useEffect } from "react";
 import MyForm from "./MyForm";
+import { WithAuth } from "./Hoc";
 
 const TodoList = () => {
 
     const todos = useSelector((state:AppState) => state.todos);
     const header = useSelector((state:AppState) => state.header);
     const dispatch:ThunkDispatch<AppState,void,TodoAction> = useDispatch();
+    const Enhanced = WithAuth(MyForm);
 
     useEffect(() => {
         dispatch(fetchTodos());
@@ -23,7 +25,7 @@ const TodoList = () => {
     return (
         <div>
             <h2>{header.title}</h2>
-            <MyForm getData={handleData}></MyForm>
+            <Enhanced getData={handleData}></Enhanced>
             {todos?.map(item => <li onClick={() => dispatch(deleteTodo(item.id))} key={item.id}>{item.title}</li>)}
         </div>
     )
